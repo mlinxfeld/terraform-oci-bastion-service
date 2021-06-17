@@ -1,6 +1,6 @@
 resource "oci_bastion_bastion" "FoggyKitchenBastionService" {
   bastion_type                 = "STANDARD"
-  compartment_id               = var.compartment_ocid
+  compartment_id               = oci_identity_compartment.FoggyKitchenCompartment.id
   target_subnet_id             = oci_core_subnet.FoggyKitchenBastionSubnet.id
   client_cidr_block_allow_list = ["0.0.0.0/0"]
   name                         = "FoggyKitchenBastionService"
