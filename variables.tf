@@ -47,7 +47,7 @@ variable "bastion_ports" {
 }
 
 variable "NumberOfNodes" {
-  default = 2
+  default = 3
 }
 
 variable "instance_os" {
