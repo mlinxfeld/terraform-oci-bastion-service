@@ -5,6 +5,7 @@ variable "private_key_path" {}
 variable "compartment_ocid" {}
 variable "region" {}
 variable "ssh_public_key" {}
+variable "availablity_domain_name" {}
 
 variable "VCN-CIDR" {
   default = "10.0.0.0/16"
@@ -20,6 +21,18 @@ variable "LBSubnet-CIDR" {
 
 variable "BastionSubnet-CIDR" {
   default = "10.0.3.0/24"
+}
+
+variable "lb_shape" {
+  default = "flexible"
+}
+
+variable "flex_lb_min_shape" {
+  default = 10
+}
+
+variable "flex_lb_max_shape" {
+  default = 100
 }
 
 variable "VCNname" {
@@ -73,4 +86,5 @@ locals {
 # Checks if is using Flexible Compute Shapes
 locals {
   is_flexible_node_shape = contains(local.compute_flexible_shapes, var.Shape)
+  is_flexible_lb_shape   = var.lb_shape == "flexible" ? true : false
 }

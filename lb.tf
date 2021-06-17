@@ -8,10 +8,14 @@ resource "oci_load_balancer" "FoggyKitchenFlexPublicLoadBalancer" {
     oci_core_subnet.FoggyKitchenLBSubnet.id
   ]
 
-  shape = "flexible"
-  shape_details {
-    minimum_bandwidth_in_mbps = 10
-    maximum_bandwidth_in_mbps = 100
+  shape = var.lb_shape
+
+  dynamic "shape_details" {
+    for_each = local.is_flexible_lb_shape ? [1] : []
+    content {
+      minimum_bandwidth_in_mbps = var.flex_lb_min_shape
+      maximum_bandwidth_in_mbps = var.flex_lb_max_shape
+    }
   }
 }
 
