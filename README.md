@@ -58,11 +58,9 @@ Within web browser go to URL: https://www.terraform.io/downloads.html. Find your
 [opc@terraform-server terraform-oci-bastion-service]$ export PATH=$PATH:/home/opc/terraform
 
 [opc@terraform-server terraform-oci-bastion-service]$ terraform --version
+Terraform v1.0.0
+on darwin_amd64
 
-Terraform v0.12.16
-
-Your version of Terraform is out of date! The latest version
-is 0.12.17. You can update by downloading from https://www.terraform.io/downloads.html
 ```
 
 ### STEP 3. 
@@ -84,7 +82,7 @@ export TF_VAR_region="eu-frankfurt-1"
 Run *terraform init* with upgrade option just to download the lastest neccesary providers:
 
 ```
-[opc@terraform-server terraform-oci-bastion-service]$ terraform init -upgrade
+[opc@terraform-server terraform-oci-bastion-service]$ terraform init 
 
 
 Initializing the backend...
