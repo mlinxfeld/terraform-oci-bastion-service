@@ -125,8 +125,6 @@ Run *terraform apply* to provision the content of this code (type **yes** to con
 ```
 [opc@terraform-server terraform-oci-bastion-service]$ terraform apply 
 
-(...)
-
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
   + create
  <= read (data resources)
@@ -197,26 +195,44 @@ tls_private_key.public_private_key_pair: Creating...
 tls_private_key.public_private_key_pair: Creation complete after 0s [id=b3ccdb0167c728cc743170dc94bea9fd681360d6]
 
 (...)
-oci_load_balancer_backend.FoggyKitchenFlexPublicLoadBalancerBackend1: Still creating... [1m40s elapsed]
-oci_load_balancer_backend.FoggyKitchenFlexPublicLoadBalancerBackend1: Creation complete after 1m44s [id=loadBalancers/ocid1.loadbalancer.oc1.iad.aaaaaaaakwlpakwhgolzbztt5df6wsgwc7umso7paii36t7dw2bsecgz7vba/backendSets/FoggyKitchenFlexLBBackendset/backends/10.0.1.3:80]
+null_resource.FoggyKitchenWebserverHTTPD[1]: Still creating... [20s elapsed]
+null_resource.FoggyKitchenWebserverHTTPD[0]: Still creating... [20s elapsed]
+null_resource.FoggyKitchenWebserverHTTPD[1] (remote-exec): == 2. Creating /var/www/html/index.html
+null_resource.FoggyKitchenWebserverHTTPD[1] (remote-exec): == 3. Disabling firewall and starting HTTPD service
+null_resource.FoggyKitchenWebserverHTTPD[1] (remote-exec): Redirecting to /bin/systemctl stop firewalld.service
+null_resource.FoggyKitchenWebserverHTTPD[1] (remote-exec): Redirecting to /bin/systemctl start httpd.service
+oci_load_balancer_backend.FoggyKitchenFlexPublicLoadBalancerBackend[0]: Still creating... [2m0s elapsed]
+null_resource.FoggyKitchenWebserverHTTPD[0] (remote-exec): == 2. Creating /var/www/html/index.html
+null_resource.FoggyKitchenWebserverHTTPD[0] (remote-exec): == 3. Disabling firewall and starting HTTPD service
+null_resource.FoggyKitchenWebserverHTTPD[0] (remote-exec): Redirecting to /bin/systemctl stop firewalld.service
+null_resource.FoggyKitchenWebserverHTTPD[1]: Creation complete after 25s [id=4600899271184193071]
+null_resource.FoggyKitchenWebserverHTTPD[0] (remote-exec): Redirecting to /bin/systemctl start httpd.service
+null_resource.FoggyKitchenWebserverHTTPD[0]: Creation complete after 26s [id=1583315481895311973]
+oci_load_balancer_backend.FoggyKitchenFlexPublicLoadBalancerBackend[0]: Still creating... [2m10s elapsed]
+oci_load_balancer_backend.FoggyKitchenFlexPublicLoadBalancerBackend[0]: Creation complete after 2m14s [id=loadBalancers/ocid1.loadbalancer.oc1.iad.aaaaaaaab76m2udp66fnlyobdxxlqtyuezviu7mrcswhywr3crtxsyjoxmxa/backendSets/FoggyKitchenFlexLBBackendset/backends/10.0.1.220:80]
 
-Apply complete! Resources: 27 added, 0 changed, 0 destroyed.
+Apply complete! Resources: 30 added, 0 changed, 0 destroyed.
 
 Outputs:
 
-FoggyKitchenBastionServer_PublicIP = [
-  "150.136.64.117",
-]
 FoggyKitchenFlexPublicLoadBalancer_Public_IP = [
+  tolist([
+    "193.122.196.11",
+  ]),
+]
+FoggyKitchenWebserver_PrivateIP = [
   [
-    "193.122.204.3",
+    "10.0.1.220",
+    "10.0.1.171",
   ],
 ]
-FoggyKitchenWebserver1_PrivateIP = [
-  "10.0.1.3",
-]
-FoggyKitchenWebserver2_PrivateIP = [
-  "10.0.1.2",
+bastion_ssh_metadata = [
+  tomap({
+    "command" = "ssh -i <privateKey> -o ProxyCommand=\"ssh -i <privateKey> -W %h:%p -p 22 ocid1.bastionsession.oc1.iad.amaaaaaanlc5nbyaetiheqru32pxqdvwsqtvuqv2p43w5o74gvxbjccwic6q@host.bastion.us-ashburn-1.oci.oraclecloud.com\" -p 22 opc@10.0.1.220"
+  }),
+  tomap({
+    "command" = "ssh -i <privateKey> -o ProxyCommand=\"ssh -i <privateKey> -W %h:%p -p 22 ocid1.bastionsession.oc1.iad.amaaaaaanlc5nbyaia26t2hced3ezkzz7on4g5alehxjyayhvd2mqmgg4jta@host.bastion.us-ashburn-1.oci.oraclecloud.com\" -p 22 opc@10.0.1.171"
+  }),
 ]
 (...)
 
@@ -228,49 +244,51 @@ After testing the environment you can remove the whole OCI infra. You should jus
 ```
 [opc@terraform-server terraform-oci-bastion-service]$ terraform destroy
 
-data.oci_identity_availability_domains.ADs: Refreshing state... [id=IdentityAvailabilityDomainsDataSource-3269541301]
+tls_private_key.public_private_key_pair: Refreshing state... [id=9c7d89cc0a265618b1790387107288fe94b220c9]
 oci_identity_compartment.FoggyKitchenCompartment: Refreshing state... [id=ocid1.compartment.oc1..aaaaaaaayxvhhjidfxsq35muvshgxv62ac2mn6mi2yo2xqzsq53jgkuozfwq]
-data.oci_core_images.OSImageLocal: Refreshing state... [id=CoreImagesDataSource-3030678454]
-oci_core_virtual_network.FoggyKitchenVCN: Refreshing state... [id=ocid1.vcn.oc1.iad.amaaaaaanlc5nbyatfsremzrq5agy2b5v7deja54rmtrqfbv2p5wc6s3prrq]
-oci_core_network_security_group.FoggyKitchenWebSecurityGroup: Refreshing state... [id=ocid1.networksecuritygroup.oc1.iad.aaaaaaaalkzj5i2btyqde3jafj4o5zxbrr6v3bdt5rw5gqtcgyff3xq2xcma]
-oci_core_internet_gateway.FoggyKitchenInternetGateway: Refreshing state... [id=ocid1.internetgateway.oc1.iad.aaaaaaaawwzbcubzr6dac2xcsraauglsvaokqcpov54qnw7or4qeey46eyta]
-oci_core_network_security_group.FoggyKitchenSSHSecurityGroup: Refreshing state... [id=ocid1.networksecuritygroup.oc1.iad.aaaaaaaa2sg4voivred6m24eqrnr26e62fpykuslpttcfo2tdmfq5pdlgqwq]
+oci_core_virtual_network.FoggyKitchenVCN: Refreshing state... [id=ocid1.vcn.oc1.iad.amaaaaaanlc5nbyakxif2noo45urrtmwterdzihhtimmyynu4yzr5tmfxtoq]
+oci_core_network_security_group.FoggyKitchenSSHSecurityGroup: Refreshing state... [id=ocid1.networksecuritygroup.oc1.iad.aaaaaaaayztvs3pikdwzv3amh7b6bxlfcuopeu6vpnnaamxw53ddudxiyzda]
+oci_core_nat_gateway.FoggyKitchenNATGateway: Refreshing state... [id=ocid1.natgateway.oc1.iad.aaaaaaaaej7ix2byhtwwxyiy7kwgsl4mhlu2pzzzhfkbzdhz5sgugefn7b3q]
+oci_core_network_security_group.FoggyKitchenWebSecurityGroup: Refreshing state... [id=ocid1.networksecuritygroup.oc1.iad.aaaaaaaahinxzxoiux7hs2zyg7mzhczxptclv3blnymj7calwngfeybmd2ua]
+
 (...)
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  - destroy
 
-  # oci_load_balancer_listener.FoggyKitchenFlexPublicLoadBalancerListener will be destroyed
-  - resource "oci_load_balancer_listener" "FoggyKitchenFlexPublicLoadBalancerListener" {
-      - default_backend_set_name = "FoggyKitchenFlexLBBackendset" -> null
-      - hostname_names           = [] -> null
-      - id                       = "loadBalancers/ocid1.loadbalancer.oc1.iad.aaaaaaaakwlpakwhgolzbztt5df6wsgwc7umso7paii36t7dw2bsecgz7vba/listeners/FoggyKitchenFlexLBListener" -> null
-      - load_balancer_id         = "ocid1.loadbalancer.oc1.iad.aaaaaaaakwlpakwhgolzbztt5df6wsgwc7umso7paii36t7dw2bsecgz7vba" -> null
-      - name                     = "FoggyKitchenFlexLBListener" -> null
-      - port                     = 80 -> null
-      - protocol                 = "HTTP" -> null
-      - rule_set_names           = [] -> null
-      - state                    = "SUCCEEDED" -> null
+Terraform will perform the following actions:
 
-      - connection_configuration {
-          - backend_tcp_proxy_protocol_version = 0 -> null
-          - idle_timeout_in_seconds            = "60" -> null
-        }
+  # null_resource.FoggyKitchenWebserverHTTPD[0] will be destroyed
+  - resource "null_resource" "FoggyKitchenWebserverHTTPD" {
+      - id = "1583315481895311973" -> null
     }
 
-Plan: 0 to add, 0 to change, 27 to destroy.
+  # null_resource.FoggyKitchenWebserverHTTPD[1] will be destroyed
+  - resource "null_resource" "FoggyKitchenWebserverHTTPD" {
+      - id = "4600899271184193071" -> null
+    }
+(...)
+
+Plan: 0 to add, 0 to change, 30 to destroy.
 
 Changes to Outputs:
-  - FoggyKitchenBastionServer_PublicIP           = [
-      - "150.136.64.117",
-    ] -> null
   - FoggyKitchenFlexPublicLoadBalancer_Public_IP = [
       - [
-          - "193.122.204.3",
+          - "193.122.196.11",
         ],
     ] -> null
-  - FoggyKitchenWebserver1_PrivateIP             = [
-      - "10.0.1.3",
+  - FoggyKitchenWebserver_PrivateIP              = [
+      - [
+          - "10.0.1.220",
+          - "10.0.1.171",
+        ],
     ] -> null
-  - FoggyKitchenWebserver2_PrivateIP             = [
-      - "10.0.1.2",
+  - bastion_ssh_metadata                         = [
+      - {
+          - "command" = "ssh -i <privateKey> -o ProxyCommand=\"ssh -i <privateKey> -W %h:%p -p 22 ocid1.bastionsession.oc1.iad.amaaaaaanlc5nbyaetiheqru32pxqdvwsqtvuqv2p43w5o74gvxbjccwic6q@host.bastion.us-ashburn-1.oci.oraclecloud.com\" -p 22 opc@10.0.1.220"
+        },
+      - {
+          - "command" = "ssh -i <privateKey> -o ProxyCommand=\"ssh -i <privateKey> -W %h:%p -p 22 ocid1.bastionsession.oc1.iad.amaaaaaanlc5nbyaia26t2hced3ezkzz7on4g5alehxjyayhvd2mqmgg4jta@host.bastion.us-ashburn-1.oci.oraclecloud.com\" -p 22 opc@10.0.1.171"
+        },
     ] -> null
 
 Do you really want to destroy all resources?
