@@ -4,8 +4,11 @@ variable "fingerprint" {}
 variable "private_key_path" {}
 variable "compartment_ocid" {}
 variable "region" {}
-variable "ssh_public_key" {}
 variable "availablity_domain_name" {}
+
+variable "ssh_public_key" {
+  default = ""
+}
 
 variable "VCN-CIDR" {
   default = "10.0.0.0/16"
