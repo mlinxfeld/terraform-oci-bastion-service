@@ -19,11 +19,11 @@ Clone the repo from GitHub.com service by executing the command as follows and t
 ```
 [opc@terraform-server ~]$ git clone https://github.com/mlinxfeld/terraform-oci-bastion-service.git
 Cloning into 'terraform-oci-bastion-service'...
-remote: Enumerating objects: 45, done.
-remote: Counting objects: 100% (45/45), done.
-remote: Compressing objects: 100% (31/31), done.
-remote: Total 45 (delta 19), reused 40 (delta 14), pack-reused 0
-Unpacking objects: 100% (45/45), done.
+remote: Enumerating objects: 24, done.
+remote: Counting objects: 100% (24/24), done.
+remote: Compressing objects: 100% (21/21), done.
+remote: Total 24 (delta 4), reused 22 (delta 2), pack-reused 0
+Unpacking objects: 100% (24/24), done.
 
 [opc@terraform-server ~]$ cd terraform-oci-bastion-service/
 
