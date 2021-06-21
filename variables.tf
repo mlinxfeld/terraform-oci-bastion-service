@@ -76,6 +76,14 @@ variable "linux_os_version" {
   default     = "7.9"
 }
 
+variable "client_cidr_block_allow_list" {
+  default = "0.0.0.0/0"
+}
+
+variable "max_session_ttl_in_seconds" {
+  default = 1800
+}
+
 # Dictionary Locals
 locals {
   compute_flexible_shapes = [

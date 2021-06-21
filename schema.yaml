@@ -25,6 +25,14 @@ variableGroups:
   - NumberOfNodes
   - show_advanced 
 
+- title: "Bastion Service Optional Configuration"
+  visible: 
+      and:
+        - show_advanced
+  variables:
+  - client_cidr_block_allow_list
+  - max_session_ttl_in_seconds
+
 - title: "Networking Optional Configuration"
   visible: 
       and:
@@ -283,6 +291,28 @@ variables:
         - eq:
           - lb_shape 
           - "flexible"
+
+  client_cidr_block_allow_list:
+    type: array
+    items:
+      type: string
+      pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$" 
+    required: true
+    title: "Bastion Service Client CIDR Block Allow List"
+    default: ["0.0.0.0/0"]
+    minItems: 1
+    uniqueItems: true
+    description: "Define CIDR Blocks Allowed to access Bastion Service (by default 0.0.0.0/0)."
+
+  max_session_ttl_in_seconds:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 65535
+    multipleOf: 1
+    default: 1800
+    title: "Max Session TTL for Bastion Service Session (in seconds)"
+    description: "Choose number of seconds for Bastion Service Session TTL (by default 1800)."
 
 outputs:
 

@@ -2,9 +2,9 @@ resource "oci_bastion_bastion" "FoggyKitchenBastionService" {
   bastion_type                 = "STANDARD"
   compartment_id               = oci_identity_compartment.FoggyKitchenCompartment.id
   target_subnet_id             = oci_core_subnet.FoggyKitchenBastionSubnet.id
-  client_cidr_block_allow_list = ["0.0.0.0/0"]
+  client_cidr_block_allow_list = split(",", var.client_cidr_block_allow_list)
   name                         = "FoggyKitchenBastionService"
-  max_session_ttl_in_seconds   = 1800
+  max_session_ttl_in_seconds   = var.max_session_ttl_in_seconds
 }
 
 resource "oci_bastion_session" "FoggyKitchenSSHViaBastionService" {
